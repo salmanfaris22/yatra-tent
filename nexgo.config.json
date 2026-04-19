@@ -1,0 +1,38 @@
+{
+  "projectName": "yatra-tents",
+  "port": 3000,
+  "host": "0.0.0.0",
+  "pagesDir": "pages",
+  "staticDir": "static",
+  "layoutsDir": "layouts",
+  "componentsDir": "components",
+  "islandsDir": "islands",
+  "outputDir": ".nexgo/out",
+  "hotReload": true,
+  "compression": true,
+  "minify": true,
+  "i18n": {
+    "defaultLang": "en",
+    "languages": ["en", "ml"],
+    "dir": "lang"
+  },
+  "seo": {
+    "siteName": "Yatra Tents",
+    "siteURL": "https://yatratents.in",
+    "titleTemplate": "%s | Yatra Tents - Tents That Travel With You",
+    "defaultDescription": "Affordable tent and camping equipment rentals across Kerala. Strangers camp, travel gear, guided trips. യാത്രയുടെ പുതിയ ലോകം.",
+    "defaultOGImage": "https://yatratents.in/static/images/logo.jpg",
+    "twitterSite": "@yatra_tents",
+    "language": "en",
+    "themeColor": "#2D5F3F",
+    "faviconURL": "/static/images/logo.jpg",
+    "author": "Salman Faris",
+    "autoSitemap": true,
+    "autoRobotsTxt": true,
+    "autoCanonical": true,
+    "coreWebVitals": true,
+    "vitalsEndpoint": "/api/vitals",
+    "robotsAllow": ["/"],
+    "robotsDisallow": ["/api/", "/_nexgo/"]
+  }
+}

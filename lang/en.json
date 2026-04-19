@@ -1,0 +1,24 @@
+{
+  "site": {
+    "name": "Yatra Tents",
+    "tagline": "Tents That Travel With You",
+    "description": "Affordable tent and camping equipment rentals across Kerala. Strangers camp, travel gear, guided trips."
+  },
+  "nav": {
+    "home": "Home",
+    "rentals": "Rentals",
+    "events": "Events",
+    "gallery": "Gallery",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "home": {
+    "hero_title": "Pack light. Camp wild. Make friends.",
+    "hero_lead": "Affordable tent and camping gear rentals across Kerala.",
+    "rent_btn": "Rent a tent",
+    "join_btn": "Join an event"
+  },
+  "footer": {
+    "copyright": "Made with ⛺ in Kerala."
+  }
+}

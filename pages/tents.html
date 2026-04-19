@@ -1,0 +1,59 @@
+<section style="text-align:center; padding-top: 4rem;">
+  <span class="hero-tagline">⛺ <span data-l="en">RENTAL CATALOG</span><span data-l="ml">വാടക കാറ്റലോഗ്</span></span>
+  <h1 class="reveal" data-l="en">Tents & travel gear <span class="gradient-text">on rent</span></h1>
+  <h1 class="reveal" data-l="ml">ടെന്റും യാത്ര ഉപകരണങ്ങളും <span class="gradient-text">വാടകയ്ക്ക്</span></h1>
+  <p class="reveal" style="max-width:640px;margin:1.2rem auto;color:var(--ink-soft);font-size:1.1rem;">
+    <span data-l="en">Daily rentals, pickup from Kochi or doorstep delivery in select cities. WhatsApp us to confirm availability.</span>
+    <span data-l="ml">ദിവസ വാടക, കൊച്ചിയിൽ നിന്നും പിക്കപ്പ് അല്ലെങ്കിൽ തിരഞ്ഞെടുത്ത നഗരങ്ങളിൽ ഹോം ഡെലിവറി.</span>
+  </p>
+</section>
+
+<section>
+  <div class="section-head reveal">
+    <span class="eyebrow">⛺ <span data-l="en">All Tents</span><span data-l="ml">എല്ലാ ടെന്റുകളും</span></span>
+    <h2 data-l="en">Pick your shelter</h2>
+    <h2 data-l="ml">നിങ്ങളുടെ ടെന്റ് തിരഞ്ഞെടുക്കൂ</h2>
+  </div>
+  <div class="grid">
+    {{ range $i, $t := .Props.tents }}
+    <div class="card reveal delay-{{ add $i 1 }}">
+      <span class="icon">{{ $t.Icon }}</span>
+      <h3><span data-l="en">{{ $t.Name }}</span><span data-l="ml">{{ $t.NameML }}</span></h3>
+      <div class="meta">👥 {{ $t.Capacity }}</div>
+      <p><span data-l="en">{{ $t.Description }}</span><span data-l="ml">{{ $t.DescriptionML }}</span></p>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1rem;gap:0.6rem;flex-wrap:wrap;">
+        <span class="price">{{ $t.Price }}</span>
+        <a href="https://wa.me/919999999999?text=Hi%20I%20want%20to%20book%20{{ $t.Name }}" target="_blank" class="btn btn-ghost" style="padding:0.5rem 1rem;font-size:0.85rem;">💬 Book</a>
+      </div>
+    </div>
+    {{ end }}
+  </div>
+</section>
+
+<section style="background: rgba(45, 95, 63, 0.06); max-width: none; padding: 5rem 2rem;">
+  <div style="max-width:1300px;margin:0 auto;">
+    <div class="section-head reveal">
+      <span class="eyebrow">🎒 <span data-l="en">Travel Gear</span><span data-l="ml">യാത്ര ഉപകരണം</span></span>
+      <h2 data-l="en">Add-ons for your trip</h2>
+      <h2 data-l="ml">യാത്രയ്ക്ക് വേണ്ട ആഡ്-ഓണുകൾ</h2>
+    </div>
+    <div class="grid">
+      {{ range $i, $g := .Props.gear }}
+      <div class="card reveal delay-{{ add $i 1 }}">
+        <span class="icon wiggle">{{ $g.Icon }}</span>
+        <h3><span data-l="en">{{ $g.Name }}</span><span data-l="ml">{{ $g.NameML }}</span></h3>
+        <p><span data-l="en">{{ $g.Description }}</span><span data-l="ml">{{ $g.DescriptionML }}</span></p>
+        <span class="price">{{ $g.Price }}</span>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</section>
+
+<section class="cta-banner reveal">
+  <h2 data-l="en">Need a custom kit?</h2>
+  <h2 data-l="ml">കസ്റ്റം കിറ്റ് വേണോ?</h2>
+  <p data-l="en">Tell us your group size and trip dates — we'll bundle the right tents and gear for you.</p>
+  <p data-l="ml">നിങ്ങളുടെ ഗ്രൂപ്പ് സൈസും തീയതികളും പറയൂ — ശരിയായ ടെന്റും ഉപകരണങ്ങളും ബണ്ടിൽ ചെയ്യാം.</p>
+  <a href="/contact" class="btn btn-gold">📋 <span data-l="en">Request a quote</span><span data-l="ml">കോട്ട് അഭ്യർത്ഥിക്കുക</span></a>
+</section>

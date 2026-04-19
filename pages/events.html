@@ -1,0 +1,33 @@
+<section style="text-align:center;padding-top:4rem;">
+  <span class="hero-tagline"><span class="pulse-dot"></span><span data-l="en">UPCOMING TRIPS</span><span data-l="ml">വരാനിരിക്കുന്ന യാത്രകൾ</span></span>
+  <h1 class="reveal" data-l="en">Adventures around the <span class="gradient-text">corner</span></h1>
+  <h1 class="reveal" data-l="ml">അടുത്തുള്ള <span class="gradient-text">സാഹസങ്ങൾ</span></h1>
+  <p class="reveal" style="max-width:640px;margin:1.2rem auto;color:var(--ink-soft);font-size:1.1rem;">
+    <span data-l="en">Strangers camps, treks, backwater nights — small groups, big stories.</span>
+    <span data-l="ml">സ്ട്രേഞ്ചേഴ്സ് ക്യാമ്പുകൾ, ട്രെക്കുകൾ, ബാക്ക്‌വാട്ടർ രാത്രികൾ — ചെറിയ ഗ്രൂപ്പ്, വലിയ കഥകൾ.</span>
+  </p>
+</section>
+
+<section>
+  <div class="events-timeline">
+    {{ range $i, $e := .Props.events }}
+    <div class="event-card reveal delay-{{ add $i 1 }}" id="event-{{ lower $e.Location }}">
+      <div class="event-icon">{{ $e.Icon }}</div>
+      <div class="event-info">
+        <h3><span data-l="en">{{ $e.Title }}</span><span data-l="ml">{{ $e.TitleML }}</span></h3>
+        <div class="where">📍 <span data-l="en">{{ $e.Location }}</span><span data-l="ml">{{ $e.LocationML }}</span> · 📅 {{ $e.Date }}</div>
+        <div class="desc"><span data-l="en">{{ $e.Description }}</span><span data-l="ml">{{ $e.DescriptionML }}</span></div>
+      </div>
+      <div class="event-spots">{{ $e.Spots }}</div>
+    </div>
+    {{ end }}
+  </div>
+</section>
+
+<section class="cta-banner reveal">
+  <h2 data-l="en">Want to host a private trip?</h2>
+  <h2 data-l="ml">സ്വന്തം യാത്ര ആസൂത്രണം ചെയ്യണോ?</h2>
+  <p data-l="en">Birthdays, college groups, company offsites — we'll plan the route, tents and food.</p>
+  <p data-l="ml">പിറന്നാളുകൾ, കോളേജ് ഗ്രൂപ്പുകൾ, കമ്പനി ഓഫ്സൈറ്റുകൾ — റൂട്ട്, ടെന്റ്, ഭക്ഷണം ഞങ്ങൾ ആസൂത്രണം ചെയ്യാം.</p>
+  <a href="/contact" class="btn btn-gold">📩 <span data-l="en">Plan with us</span><span data-l="ml">ഞങ്ങളോടൊപ്പം പ്ലാൻ ചെയ്യൂ</span></a>
+</section>

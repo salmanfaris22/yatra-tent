@@ -1,0 +1,95 @@
+<section class="nf-section">
+  <div class="nf-scene" aria-hidden="true">
+    <!-- Background path winding off into the forest -->
+    <svg class="nf-path" viewBox="0 0 600 280" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="nfPath" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0"   stop-color="#E8CA8A"/>
+          <stop offset="1"   stop-color="#C28518"/>
+        </linearGradient>
+      </defs>
+      <!-- Distant hills -->
+      <path d="M0 200 L80 140 L160 180 L240 120 L340 170 L440 130 L540 180 L600 150 L600 280 L0 280 Z"
+            fill="#7FA590" opacity="0.55"/>
+      <path d="M0 230 L100 190 L200 220 L300 180 L400 215 L500 185 L600 220 L600 280 L0 280 Z"
+            fill="#3F6A52"/>
+      <!-- The winding dirt trail -->
+      <path class="nf-trail"
+            d="M 300 280 Q 260 230 320 200 T 280 140 T 340 90 T 300 40"
+            fill="none"
+            stroke="url(#nfPath)"
+            stroke-width="22"
+            stroke-linecap="round"
+            stroke-dasharray="14 10"/>
+      <!-- Big pines along the trail -->
+      <g fill="#1F4429" stroke="#0E1A0B" stroke-width="2" stroke-linejoin="round">
+        <g transform="translate(90 250)">
+          <polygon points="0,-90 -22,-48 -11,-48 -28,-18 -14,-18 -32,10 32,10 14,-18 28,-18 11,-48 22,-48"/>
+          <rect x="-5" y="10" width="10" height="16" fill="#4A2509" stroke="#2C1605"/>
+        </g>
+        <g transform="translate(170 260)">
+          <polygon points="0,-65 -16,-35 -8,-35 -20,-12 -10,-12 -24,8 24,8 10,-12 20,-12 8,-35 16,-35"/>
+          <rect x="-4" y="8" width="8" height="12" fill="#4A2509" stroke="#2C1605"/>
+        </g>
+        <g transform="translate(480 255)">
+          <polygon points="0,-80 -20,-42 -10,-42 -26,-14 -13,-14 -30,10 30,10 13,-14 26,-14 10,-42 20,-42"/>
+          <rect x="-5" y="10" width="10" height="14" fill="#4A2509" stroke="#2C1605"/>
+        </g>
+        <g transform="translate(530 260)">
+          <polygon points="0,-60 -15,-30 -7,-30 -19,-10 -9,-10 -22,8 22,8 9,-10 19,-10 7,-30 15,-30"/>
+          <rect x="-4" y="8" width="8" height="12" fill="#4A2509" stroke="#2C1605"/>
+        </g>
+        <g transform="translate(400 250)">
+          <polygon points="0,-85 -21,-45 -10,-45 -27,-16 -13,-16 -31,10 31,10 13,-16 27,-16 10,-45 21,-45"/>
+          <rect x="-5" y="10" width="10" height="16" fill="#4A2509" stroke="#2C1605"/>
+        </g>
+      </g>
+      <!-- Sign post: "trail ends here" -->
+      <g class="nf-sign" transform="translate(250 210)">
+        <rect x="-2" y="0" width="4" height="45" fill="#6B3A14" stroke="#2C1605" stroke-width="1.5"/>
+        <rect x="-30" y="-6" width="60" height="18" fill="#E8A530" stroke="#1A2F1A" stroke-width="2" rx="2"/>
+        <text x="0" y="6" text-anchor="middle" font-family="Manrope,sans-serif" font-size="9" font-weight="800" fill="#1A2F1A">NO TRAIL</text>
+      </g>
+    </svg>
+
+    <!-- Lost traveler standing next to the sign, scratching head -->
+    <svg class="nf-traveler" viewBox="0 0 100 130" xmlns="http://www.w3.org/2000/svg">
+      <g>
+        <rect x="18" y="36" width="14" height="22" rx="3" fill="#2D5F3F" stroke="#1A2F1A" stroke-width="2"/>
+        <ellipse cx="40" cy="8" rx="11" ry="2.5" fill="#C28518" stroke="#1A2F1A" stroke-width="2"/>
+        <rect x="35" y="2" width="10" height="6" rx="1.5" fill="#E8A530" stroke="#1A2F1A" stroke-width="2"/>
+        <circle cx="40" cy="14" r="8" fill="#F5D6A4" stroke="#1A2F1A" stroke-width="2.5"/>
+        <line x1="40" y1="22" x2="40" y2="58" stroke="#1A2F1A" stroke-width="4" stroke-linecap="round"/>
+        <!-- Head scratching arm (animated) -->
+        <g class="nf-arm-scratch">
+          <line x1="40" y1="28" x2="44" y2="12" stroke="#1A2F1A" stroke-width="3" stroke-linecap="round"/>
+        </g>
+        <line x1="40" y1="28" x2="52" y2="50" stroke="#1A2F1A" stroke-width="3" stroke-linecap="round"/>
+        <line x1="40" y1="58" x2="34" y2="90" stroke="#1A2F1A" stroke-width="3" stroke-linecap="round"/>
+        <line x1="40" y1="58" x2="46" y2="90" stroke="#1A2F1A" stroke-width="3" stroke-linecap="round"/>
+        <line x1="34" y1="90" x2="30" y2="92" stroke="#4A2509" stroke-width="5" stroke-linecap="round"/>
+        <line x1="46" y1="90" x2="50" y2="92" stroke="#4A2509" stroke-width="5" stroke-linecap="round"/>
+        <!-- Question marks floating above -->
+        <text class="nf-q q1" x="56" y="6" font-size="14" font-weight="800" fill="#C0392B">?</text>
+        <text class="nf-q q2" x="28" y="2" font-size="11" font-weight="800" fill="#E8A530">?</text>
+        <text class="nf-q q3" x="66" y="-4" font-size="9" font-weight="800" fill="#2D5F3F">?</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="nf-text">
+    <div class="nf-code">
+      <span class="nf-digit d4a">4</span>
+      <span class="nf-digit d0">0</span>
+      <span class="nf-digit d4b">4</span>
+    </div>
+    <h1 data-l="en">This trail doesn't exist</h1>
+    <h1 data-l="ml">ഈ വഴി നിലവിലില്ല</h1>
+    <p data-l="en">Looks like you wandered off the map. Let's get you back to camp.</p>
+    <p data-l="ml">മാപ്പിൽ നിന്ന് പുറത്ത് പോയതായി തോന്നുന്നു. നമുക്ക് ക്യാമ്പിലേക്ക് മടങ്ങാം.</p>
+    <div class="nf-cta">
+      <a href="/" class="btn">🏕 <span data-l="en">Back to home</span><span data-l="ml">ഹോമിലേക്ക് മടങ്ങുക</span></a>
+      <a href="/events" class="btn btn-ghost">🌲 <span data-l="en">Find a trip</span><span data-l="ml">ഒരു യാത്ര കണ്ടെത്തൂ</span></a>
+    </div>
+  </div>
+</section>
