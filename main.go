@@ -20,11 +20,11 @@ import (
 
 	"github.com/salmanfaris22/nexgo/v2/pkg/config"
 	"github.com/salmanfaris22/nexgo/v2/pkg/server"
+	// Side-effect import: pages/api/*.go register API handlers in init(
 
 	"yatra-tents/loaders"
 	"yatra-tents/models"
 	"yatra-tents/seo"
-
 	// Side-effect import: pages/api/*.go register API handlers in init().
 	_ "yatra-tents/pages/api"
 )
