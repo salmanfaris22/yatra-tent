@@ -1,0 +1,1418 @@
+/* Reveal-on-scroll */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal.delay-1 { transition-delay: 0.1s; }
+.reveal.delay-2 { transition-delay: 0.2s; }
+.reveal.delay-3 { transition-delay: 0.3s; }
+.reveal.delay-4 { transition-delay: 0.4s; }
+
+/* Floating clouds in background */
+.floating-cloud {
+  position: absolute;
+  font-size: 3rem;
+  opacity: 0.4;
+  pointer-events: none;
+  animation: drift linear infinite;
+}
+@keyframes drift {
+  from { transform: translateX(-150px); }
+  to { transform: translateX(calc(100vw + 150px)); }
+}
+
+/* Bouncing arrow */
+.scroll-hint {
+  display: block;
+  text-align: center;
+  margin-top: 3rem;
+  font-size: 2rem;
+  color: var(--green);
+  animation: bounce 2.4s infinite;
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(12px); }
+}
+
+/* Pulsing dot */
+.pulse-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: #ff3b30;
+  border-radius: 50%;
+  margin-right: 6px;
+  animation: pulse 1.4s infinite;
+}
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(255, 59, 48, 0.7); }
+  70% { box-shadow: 0 0 0 12px rgba(255, 59, 48, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 59, 48, 0); }
+}
+
+/* Floating animation for hero icons */
+.float-anim {
+  animation: float 6s ease-in-out infinite;
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-20px) rotate(2deg); }
+}
+
+/* Twinkling stars */
+.star {
+  position: absolute;
+  color: var(--gold);
+  font-size: 1rem;
+  animation: twinkle 3s ease-in-out infinite;
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.3); }
+}
+
+/* Walking tent (infinite) */
+.walking-tents {
+  display: flex;
+  gap: 4rem;
+  font-size: 3rem;
+  animation: walk 18s linear infinite;
+  white-space: nowrap;
+}
+@keyframes walk {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* Spinning compass */
+.compass {
+  display: inline-block;
+  font-size: 2rem;
+  animation: spin 8s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Glow pulse */
+.glow {
+  animation: glow-pulse 3s ease-in-out infinite;
+}
+@keyframes glow-pulse {
+  0%, 100% { filter: drop-shadow(0 0 8px rgba(232, 165, 48, 0.5)); }
+  50% { filter: drop-shadow(0 0 24px rgba(232, 165, 48, 0.9)); }
+}
+
+/* Wiggle */
+.wiggle:hover { animation: wiggle 0.5s ease-in-out; }
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0); }
+  25% { transform: rotate(-5deg); }
+  75% { transform: rotate(5deg); }
+}
+
+/* =================================================================
+   1. ANIMATED STAT COUNTER
+   ================================================================= */
+.stat-counter {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+  transition: transform 0.4s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+.stat-counter.counting {
+  animation: counter-pop 0.4s ease-out;
+}
+@keyframes counter-pop {
+  0%   { transform: scale(1); }
+  60%  { transform: scale(1.18); }
+  100% { transform: scale(1); }
+}
+
+/* =================================================================
+   2. SCROLL PROGRESS TRAIL
+   ================================================================= */
+.scroll-trail {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 32px;
+  z-index: 110;
+  pointer-events: none;
+}
+.trail-line {
+  position: absolute;
+  top: 16px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: repeating-linear-gradient(90deg,
+    rgba(45, 95, 63, 0.5) 0 6px,
+    transparent 6px 12px);
+  border-radius: 2px;
+}
+.trail-marker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 1.4rem;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 2px 3px rgba(31, 44, 25, 0.5));
+  transition: left 0.08s linear;
+  will-change: left;
+}
+html[data-time="night"] .trail-line {
+  background: repeating-linear-gradient(90deg,
+    rgba(220, 230, 255, 0.5) 0 6px,
+    transparent 6px 12px);
+}
+
+/* =================================================================
+   3. TIME-AWARE AMBIENT PARTICLES
+   ================================================================= */
+.ambient-particles {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+.ambient-particles > div {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 2.5s ease;
+}
+html[data-time="morning"] .ap-mist     { opacity: 1; }
+html[data-time="day"]     .ap-rays     { opacity: 1; }
+html[data-time="evening"] .ap-leaves   { opacity: 1; }
+html[data-time="night"]   .ap-fireflies{ opacity: 1; }
+
+/* --- Mist (morning) --- */
+.ap-mist span {
+  position: absolute;
+  left: -25%;
+  width: 60%;
+  height: 60px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.6) 30%,
+    rgba(255, 255, 255, 0.8) 50%,
+    rgba(255, 255, 255, 0.6) 70%,
+    transparent 100%);
+  filter: blur(20px);
+  animation: mist-drift linear infinite;
+}
+.ap-mist span:nth-child(1) { top: 18%; animation-duration: 24s; animation-delay: 0s; }
+.ap-mist span:nth-child(2) { top: 38%; animation-duration: 32s; animation-delay: -6s; height: 40px; }
+.ap-mist span:nth-child(3) { top: 58%; animation-duration: 28s; animation-delay: -12s; }
+.ap-mist span:nth-child(4) { top: 72%; animation-duration: 36s; animation-delay: -18s; height: 50px; }
+.ap-mist span:nth-child(5) { top: 88%; animation-duration: 30s; animation-delay: -24s; height: 35px; }
+@keyframes mist-drift {
+  from { transform: translateX(0); }
+  to   { transform: translateX(160%); }
+}
+
+/* --- Sun rays (day) --- */
+.ap-rays span {
+  position: absolute;
+  top: -10%;
+  width: 80px;
+  height: 130%;
+  background: linear-gradient(180deg,
+    rgba(255, 230, 130, 0.35) 0%,
+    rgba(255, 220, 120, 0.18) 40%,
+    transparent 100%);
+  filter: blur(2px);
+  transform-origin: top center;
+  animation: ray-shimmer 6s ease-in-out infinite alternate;
+}
+.ap-rays span:nth-child(1) { left: 8%;  transform: rotate(-12deg); animation-delay: 0s;   }
+.ap-rays span:nth-child(2) { left: 22%; transform: rotate(-6deg);  animation-delay: 0.6s; }
+.ap-rays span:nth-child(3) { left: 38%; transform: rotate(-2deg);  animation-delay: 1.2s; }
+.ap-rays span:nth-child(4) { left: 54%; transform: rotate(4deg);   animation-delay: 1.8s; }
+.ap-rays span:nth-child(5) { left: 70%; transform: rotate(8deg);   animation-delay: 2.4s; }
+.ap-rays span:nth-child(6) { left: 86%; transform: rotate(14deg);  animation-delay: 3s;   }
+@keyframes ray-shimmer {
+  from { opacity: 0.5; }
+  to   { opacity: 1; }
+}
+
+/* --- Falling leaves (evening) --- */
+.ap-leaves span {
+  position: absolute;
+  top: -40px;
+  font-size: 1.4rem;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
+  animation: leaf-fall linear infinite;
+  will-change: transform;
+}
+.ap-leaves span:nth-child(1)  { left: 6%;   animation-duration: 12s; animation-delay: 0s;    }
+.ap-leaves span:nth-child(2)  { left: 14%;  animation-duration: 16s; animation-delay: -2s;   }
+.ap-leaves span:nth-child(3)  { left: 24%;  animation-duration: 14s; animation-delay: -5s;   }
+.ap-leaves span:nth-child(4)  { left: 36%;  animation-duration: 18s; animation-delay: -1s;   }
+.ap-leaves span:nth-child(5)  { left: 46%;  animation-duration: 13s; animation-delay: -8s;   }
+.ap-leaves span:nth-child(6)  { left: 58%;  animation-duration: 17s; animation-delay: -3s;   }
+.ap-leaves span:nth-child(7)  { left: 68%;  animation-duration: 15s; animation-delay: -10s;  }
+.ap-leaves span:nth-child(8)  { left: 78%;  animation-duration: 19s; animation-delay: -6s;   }
+.ap-leaves span:nth-child(9)  { left: 88%;  animation-duration: 14s; animation-delay: -12s;  }
+.ap-leaves span:nth-child(10) { left: 96%;  animation-duration: 16s; animation-delay: -4s;   }
+@keyframes leaf-fall {
+  0%   { transform: translateY(0)        rotate(0deg);   opacity: 0; }
+  10%  { opacity: 1; }
+  100% { transform: translateY(110vh) rotate(540deg); opacity: 0.4; }
+}
+
+/* --- Fireflies (night) --- */
+.ap-fireflies span {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #FFE680;
+  box-shadow:
+    0 0 6px #FFE680,
+    0 0 14px rgba(255, 200, 80, 0.85),
+    0 0 24px rgba(255, 180, 60, 0.5);
+  animation: firefly-blink ease-in-out infinite, firefly-drift linear infinite;
+  will-change: transform, opacity;
+}
+.ap-fireflies span:nth-child(1)  { top: 20%; left: 10%; animation-duration: 2.5s, 22s; animation-delay: 0s,    0s;   }
+.ap-fireflies span:nth-child(2)  { top: 30%; left: 22%; animation-duration: 3s,   28s; animation-delay: 0.4s, -4s;   }
+.ap-fireflies span:nth-child(3)  { top: 18%; left: 36%; animation-duration: 2.2s, 24s; animation-delay: 0.8s, -8s;   }
+.ap-fireflies span:nth-child(4)  { top: 42%; left: 14%; animation-duration: 2.8s, 26s; animation-delay: 1.2s, -2s;   }
+.ap-fireflies span:nth-child(5)  { top: 26%; left: 50%; animation-duration: 2.6s, 30s; animation-delay: 1.6s, -10s;  }
+.ap-fireflies span:nth-child(6)  { top: 36%; left: 64%; animation-duration: 3.2s, 23s; animation-delay: 2s,   -6s;   }
+.ap-fireflies span:nth-child(7)  { top: 22%; left: 78%; animation-duration: 2.4s, 27s; animation-delay: 0s,   -12s;  }
+.ap-fireflies span:nth-child(8)  { top: 48%; left: 88%; animation-duration: 2.9s, 25s; animation-delay: 0.5s, -4s;   }
+.ap-fireflies span:nth-child(9)  { top: 58%; left: 8%;  animation-duration: 2.5s, 29s; animation-delay: 1s,   -8s;   }
+.ap-fireflies span:nth-child(10) { top: 62%; left: 30%; animation-duration: 3s,   24s; animation-delay: 1.4s, -2s;   }
+.ap-fireflies span:nth-child(11) { top: 70%; left: 46%; animation-duration: 2.7s, 26s; animation-delay: 1.8s, -10s;  }
+.ap-fireflies span:nth-child(12) { top: 56%; left: 62%; animation-duration: 2.3s, 22s; animation-delay: 0.2s, -6s;   }
+.ap-fireflies span:nth-child(13) { top: 74%; left: 76%; animation-duration: 2.9s, 28s; animation-delay: 0.6s, -14s;  }
+.ap-fireflies span:nth-child(14) { top: 80%; left: 24%; animation-duration: 2.5s, 25s; animation-delay: 1.1s, -8s;   }
+.ap-fireflies span:nth-child(15) { top: 86%; left: 56%; animation-duration: 3.1s, 30s; animation-delay: 1.5s, -4s;   }
+@keyframes firefly-blink {
+  0%, 100% { opacity: 0.2; transform: scale(0.7); }
+  50%      { opacity: 1;   transform: scale(1.4); }
+}
+@keyframes firefly-drift {
+  0%   { translate: 0 0; }
+  25%  { translate: 30px -20px; }
+  50%  { translate: -10px 25px; }
+  75%  { translate: -25px -15px; }
+  100% { translate: 0 0; }
+}
+
+/* =================================================================
+   4. TENT-UNFURL PAGE INTRO
+   ================================================================= */
+.intro-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--cream);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+.intro-screen.hide {
+  opacity: 0;
+  visibility: hidden;
+}
+.intro-tent {
+  width: min(60vw, 280px);
+  height: auto;
+  filter: drop-shadow(0 20px 40px rgba(31, 44, 25, 0.35));
+}
+.intro-tent .intro-left {
+  transform-origin: 160px 232px;
+  animation: unfurl-left 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.intro-tent .intro-right {
+  transform-origin: 160px 232px;
+  animation: unfurl-right 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.intro-tent .intro-zip {
+  stroke-dasharray: 220;
+  stroke-dashoffset: 220;
+  animation: zip-draw 0.7s ease-out 0.4s forwards;
+}
+.intro-tent text {
+  opacity: 0;
+  animation: tag-fade 0.5s ease-out 0.9s forwards;
+}
+@keyframes unfurl-left {
+  from { transform: rotate(40deg) translateX(20px); opacity: 0; }
+  to   { transform: rotate(0)     translateX(0);    opacity: 1; }
+}
+@keyframes unfurl-right {
+  from { transform: rotate(-40deg) translateX(-20px); opacity: 0; }
+  to   { transform: rotate(0)      translateX(0);     opacity: 1; }
+}
+@keyframes zip-draw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes tag-fade {
+  to { opacity: 1; }
+}
+.intro-tag {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 700;
+  color: var(--green-dark);
+  letter-spacing: 1px;
+  opacity: 0;
+  animation: tag-fade 0.4s ease-out 1s forwards;
+}
+
+/* =================================================================
+   5. CONSTELLATIONS (only visible at night)
+   ================================================================= */
+.constellations {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 60vh;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 2.5s ease;
+}
+html[data-time="night"] .constellations { opacity: 0.55; }
+.constellation line {
+  stroke: rgba(220, 230, 255, 0.65);
+  stroke-width: 1.2;
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+  animation: con-draw 4s ease-out forwards;
+}
+.constellation circle {
+  fill: #FFFFFF;
+  filter: drop-shadow(0 0 4px #FFFFFF) drop-shadow(0 0 10px rgba(200, 220, 255, 0.7));
+  animation: con-twinkle 2.5s ease-in-out infinite;
+}
+.con-tent      line { animation-delay: 0.4s; }
+.con-arrow     line { animation-delay: 1.2s; }
+.con-bigdipper line { animation-delay: 2s;   }
+@keyframes con-draw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes con-twinkle {
+  0%, 100% { opacity: 0.5; }
+  50%      { opacity: 1;   }
+}
+
+/* =================================================================
+   6. STROKE-DRAW HEADINGS (wipe-reveal left to right when in view)
+   ================================================================= */
+.heading-draw,
+.section-head h2 {
+  position: relative;
+  display: inline-block;
+  background: linear-gradient(90deg, var(--green-dark) 50%, rgba(45, 95, 63, 0.18) 50%);
+  background-size: 200% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: background-position 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.section-head h2.visible,
+.heading-draw.visible {
+  background-position: 0 0;
+}
+html[data-time="night"] .section-head h2,
+html[data-time="night"] .heading-draw {
+  background: linear-gradient(90deg, #FFE8B8 50%, rgba(255, 232, 184, 0.18) 50%);
+  background-size: 200% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+html[data-time="night"] .section-head h2.visible,
+html[data-time="night"] .heading-draw.visible {
+  background-position: 0 0;
+}
+/* gradient-text headings keep their original gradient — exempt them */
+.section-head h2:has(.gradient-text),
+.heading-draw:has(.gradient-text) {
+  background: none;
+  -webkit-text-fill-color: initial;
+}
+
+/* =================================================================
+   TESTIMONIALS MARQUEE
+   ================================================================= */
+.testimonials {
+  position: relative;
+  padding: 5rem 0 6rem;
+  overflow: hidden;
+}
+.testi-marquee {
+  position: relative;
+  overflow: hidden;
+  padding: 1rem 0;
+  mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+}
+.testi-track {
+  display: flex;
+  gap: 1.6rem;
+  width: max-content;
+  animation: testi-scroll 60s linear infinite;
+}
+.testi-marquee:hover .testi-track { animation-play-state: paused; }
+@keyframes testi-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.testi-card {
+  flex: 0 0 320px;
+  background: var(--white);
+  border-radius: 18px;
+  padding: 1.8rem;
+  box-shadow: 0 14px 32px -10px rgba(45, 95, 63, 0.25);
+  border: 2px solid transparent;
+  border-top: 5px solid var(--gold);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: transform 0.3s, border-color 0.3s;
+}
+.testi-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(232, 165, 48, 0.4);
+}
+.testi-stars { color: var(--gold-dark); font-size: 1.05rem; letter-spacing: 2px; }
+.testi-quote {
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  font-style: italic;
+  flex-grow: 1;
+}
+.testi-author {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+  padding-top: 0.6rem;
+  border-top: 1px dashed rgba(45, 95, 63, 0.18);
+}
+.testi-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--green), var(--gold));
+  color: var(--cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1rem;
+}
+.testi-author strong { display: block; color: var(--green-dark); font-size: 0.95rem; }
+.testi-author span   { color: var(--ink-soft); font-size: 0.78rem; }
+html[data-time="night"] .testi-card {
+  background: rgba(20, 30, 60, 0.75);
+  border-top-color: var(--gold);
+}
+html[data-time="night"] .testi-quote { color: #DDD8C8; }
+
+/* =================================================================
+   INTERACTIVE INDIA MAP
+   ================================================================= */
+.india-section {
+  position: relative;
+  padding: 5rem 2rem;
+}
+.india-wrap {
+  position: relative;
+  max-width: 720px;
+  margin: 0 auto;
+}
+.india-map {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 14px 28px rgba(45, 95, 63, 0.25));
+}
+.india-outline {
+  transition: filter 0.4s;
+}
+.india-wrap:hover .india-outline {
+  filter: brightness(1.05);
+}
+.kerala-highlight {
+  animation: kerala-pulse 4s ease-in-out infinite;
+  transform-origin: 160px 425px;
+}
+@keyframes kerala-pulse {
+  0%, 100% { opacity: 0.18; transform: scale(1); }
+  50%      { opacity: 0.35; transform: scale(1.05); }
+}
+
+.map-pin {
+  cursor: pointer;
+  transition: transform 0.3s;
+  transform-origin: center;
+}
+.map-pin .pin-glow {
+  animation: pin-glow-pulse 2.4s ease-in-out infinite;
+  transform-origin: center;
+}
+.map-pin .pin-dot {
+  transition: r 0.3s, transform 0.3s;
+}
+.map-pin:hover .pin-dot,
+.map-pin:focus .pin-dot {
+  r: 9;
+  filter: drop-shadow(0 0 6px rgba(192, 57, 43, 0.7));
+}
+.map-pin:hover .pin-label,
+.map-pin:focus .pin-label {
+  font-size: 13px;
+  fill: var(--green-dark);
+}
+@keyframes pin-glow-pulse {
+  0%, 100% { opacity: 0.35; transform: scale(1); }
+  50%      { opacity: 0.9;  transform: scale(1.5); }
+}
+.pin-label {
+  pointer-events: none;
+  user-select: none;
+  transition: font-size 0.3s, fill 0.3s;
+}
+
+.india-legend {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+.legend-item { display: inline-flex; align-items: center; gap: 0.5rem; }
+.legend-item .dot { width: 12px; height: 12px; border-radius: 50%; background: #C0392B; box-shadow: 0 0 8px rgba(192, 57, 43, 0.5); }
+.legend-item .kr  { width: 14px; height: 14px; border-radius: 50%; background: var(--gold); opacity: 0.6; }
+
+html[data-time="night"] .india-outline { fill: #2D5F3F; stroke: #5A7A6B; }
+html[data-time="night"] .pin-label { fill: #FFE8B8 !important; }
+
+/* =================================================================
+   GOLD CURSOR SPARKLE TRAIL
+   ================================================================= */
+.sparkle-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9000;
+  overflow: hidden;
+}
+.sparkle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #FFE680 0%, #FFB347 50%, transparent 80%);
+  box-shadow: 0 0 8px #FFE680, 0 0 14px rgba(255, 200, 80, 0.6);
+  pointer-events: none;
+  animation: sparkle-fade 0.9s ease-out forwards;
+  will-change: transform, opacity;
+}
+@keyframes sparkle-fade {
+  0%   { opacity: 1; transform: scale(0.5) rotate(0deg); }
+  60%  { opacity: 0.85; }
+  100% { opacity: 0; transform: scale(1.6) translateY(14px) rotate(180deg); }
+}
+
+@media (hover: none), (max-width: 768px) {
+  .sparkle-layer { display: none; }
+}
+
+/* =================================================================
+   CAMP TORCHES (fire glow at night, smoke by day)
+   ================================================================= */
+.camp-torch {
+  position: absolute;
+  width: 30px;
+  height: 50px;
+  pointer-events: none;
+  z-index: 5;
+}
+.camp-torch::after {
+  /* base = small wood post */
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 14px;
+  background: linear-gradient(180deg, #6B3A14 0%, #2C1605 100%);
+  border-radius: 2px;
+}
+.flame-mini {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  width: 18px;
+  height: 28px;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at 50% 90%, #FFE680 0%, #FF8800 45%, transparent 80%);
+  border-radius: 50% 50% 22% 22% / 78% 78% 30% 30%;
+  filter: blur(0.6px);
+  opacity: 0;
+  transition: opacity 2.5s ease;
+  animation: torch-flicker 0.8s ease-in-out infinite alternate;
+  transform-origin: 50% 100%;
+}
+.smoke-mini {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(180, 180, 180, 0);
+  filter: blur(4px);
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 2.5s ease;
+}
+@keyframes torch-flicker {
+  0%   { transform: translateX(-50%) scale(1, 1)       skewX(-3deg); }
+  100% { transform: translateX(-50%) scale(0.95, 1.06) skewX(3deg); }
+}
+
+/* Night → flames lit, smoke off */
+html[data-time="night"] .flame-mini {
+  opacity: 1;
+  filter: blur(0.6px) drop-shadow(0 0 12px rgba(255, 180, 60, 0.95));
+}
+/* Add a glow halo around the torch at night so nearby text is readable */
+html[data-time="night"] .camp-torch::before {
+  content: '';
+  position: absolute;
+  inset: -40px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 200, 80, 0.45) 0%, rgba(255, 180, 60, 0.18) 30%, transparent 70%);
+  z-index: -1;
+  animation: torch-glow 3s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+@keyframes torch-glow {
+  from { opacity: 0.7; transform: scale(0.95); }
+  to   { opacity: 1;   transform: scale(1.1); }
+}
+
+/* Day / morning / evening → smoke wisps rising, no flame */
+html[data-time="day"] .smoke-mini,
+html[data-time="morning"] .smoke-mini,
+html[data-time="evening"] .smoke-mini {
+  background: rgba(180, 180, 180, 0.85);
+  animation: torch-smoke 4s ease-out infinite;
+}
+@keyframes torch-smoke {
+  0%   { opacity: 0.9; transform: translate(-50%, 0) scale(0.5); background: rgba(150, 150, 150, 0.9); }
+  60%  { opacity: 0.5; transform: translate(-40%, -30px) scale(1.4); }
+  100% { opacity: 0;   transform: translate(-60%, -60px) scale(2); }
+}
+
+/* Position helpers for torches */
+.camp-torch.ct-tl   { top: 10%; left: 6%; }
+.camp-torch.ct-tr   { top: 10%; right: 6%; }
+.camp-torch.ct-side { top: 50%; right: 4%; transform: translateY(-50%); }
+
+/* =================================================================
+   1. MAGNETIC BUTTONS — JS sets transform on mousemove
+   ================================================================= */
+.btn { transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s, box-shadow 0.3s; }
+@media (hover: none) {
+  .btn { transition: background 0.3s, box-shadow 0.3s; }
+}
+
+/* =================================================================
+   2. LETTER-REVEAL HEADINGS — h2 split into spans, falls into place
+   ================================================================= */
+.section-head h2 .letter {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(28px) rotate(8deg);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+  /* Override the wipe-reveal background-clip from earlier */
+  background: none !important;
+  -webkit-text-fill-color: currentColor !important;
+  color: var(--green-dark);
+}
+html[data-time="night"] .section-head h2 .letter { color: #FFE8B8; }
+.section-head h2.visible .letter {
+  opacity: 1;
+  transform: translateY(0) rotate(0);
+}
+/* Disable the gradient-clip wipe when letters are present */
+.section-head h2:has(.letter) {
+  background: none !important;
+  -webkit-text-fill-color: initial !important;
+}
+
+/* =================================================================
+   3. TOUCH-SWIPE TESTIMONIALS — scroll-snap on small screens
+   ================================================================= */
+@media (max-width: 880px) {
+  .testi-marquee { mask-image: none; -webkit-mask-image: none; }
+  .testi-track {
+    animation: none;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 0 1rem 1rem;
+  }
+  .testi-track::-webkit-scrollbar { display: none; }
+  .testi-track .testi-card {
+    scroll-snap-align: center;
+    flex: 0 0 calc(100vw - 4rem);
+    max-width: 360px;
+  }
+}
+
+/* =================================================================
+   4. LIQUID BLOB HOVER on cards (cursor-following light)
+   ================================================================= */
+.card { --mx: 50%; --my: 50%; }
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(420px circle at var(--mx) var(--my),
+    rgba(232, 165, 48, 0.22) 0%,
+    rgba(232, 165, 48, 0.08) 25%,
+    transparent 50%);
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  z-index: 1;
+}
+.card:hover::after { opacity: 1; }
+.card > * { position: relative; z-index: 2; }
+
+/* =================================================================
+   5. PAGE-CORNER PEEL — bottom-right curl, hover lifts, click navigates
+   ================================================================= */
+.page-peel {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  width: 84px;
+  height: 84px;
+  z-index: 70;
+  text-decoration: none;
+  pointer-events: auto;
+  filter: drop-shadow(-6px -6px 12px rgba(31, 44, 25, 0.25));
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s;
+}
+.page-peel svg { width: 100%; height: 100%; display: block; }
+.page-peel .peel-fold {
+  transform-origin: 100% 0;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.page-peel .peel-label {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 800;
+  font-size: 0.72rem;
+  color: var(--green-dark);
+  opacity: 0;
+  transform: translate(8px, 8px);
+  transition: opacity 0.3s, transform 0.3s;
+  pointer-events: none;
+}
+.page-peel:hover {
+  transform: scale(1.08) rotate(-3deg);
+  filter: drop-shadow(-10px -10px 18px rgba(31, 44, 25, 0.35));
+}
+.page-peel:hover .peel-fold {
+  transform: scale(1.6) translate(-8px, 8px);
+}
+.page-peel:hover .peel-label {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+@media (max-width: 640px) {
+  .page-peel { width: 64px; height: 64px; }
+  .page-peel .peel-label { font-size: 0.62rem; }
+}
+@media (hover: none) {
+  .page-peel .peel-label { opacity: 1; transform: translate(0, 0); }
+}
+
+/* =================================================================
+   6. PARTICLE BURST on time-of-day change
+   ================================================================= */
+.ambient-particles.bursting > div > * {
+  animation: particle-burst 0.7s ease-out forwards !important;
+}
+@keyframes particle-burst {
+  0%   { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(-60px) scale(1.6); opacity: 0; }
+}
+
+/* =================================================================
+   7. HERO UNDERLINE — SVG path that draws itself
+   ================================================================= */
+.hero-accent { position: relative; display: inline-block; }
+.hero-underline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -8px;
+  width: 100%;
+  height: 14px;
+  pointer-events: none;
+}
+.hero-underline path {
+  stroke-dasharray: 240;
+  stroke-dashoffset: 240;
+  animation: hero-underline-draw 1.6s 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes hero-underline-draw {
+  to { stroke-dashoffset: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-underline path { stroke-dashoffset: 0; animation: none; }
+}
+
+/* =================================================================
+   FOOTPRINT TRAIL — boot prints spawned behind the traveler
+   ================================================================= */
+.footprint-trail {
+  position: fixed;
+  inset: 0;
+  z-index: 75;
+  pointer-events: none;
+}
+.footprint {
+  position: fixed;
+  bottom: 10px;
+  width: 10px;
+  height: 14px;
+  background:
+    radial-gradient(ellipse at 50% 25%, #1A2F1A 0%, #1A2F1A 55%, transparent 65%),
+    radial-gradient(ellipse at 50% 80%, #1A2F1A 0%, #1A2F1A 60%, transparent 70%);
+  border-radius: 50% 50% 35% 35%;
+  opacity: 0.75;
+  filter: blur(0.5px);
+  animation: print-fade 4.5s ease-out forwards;
+}
+.footprint.alt { transform: rotate(8deg) translateY(2px); }
+@keyframes print-fade {
+  0%   { opacity: 0; transform: scale(0.6); }
+  15%  { opacity: 0.75; transform: scale(1); }
+  80%  { opacity: 0.5; }
+  100% { opacity: 0; transform: scale(1.15); }
+}
+html[data-time="night"] .footprint {
+  background:
+    radial-gradient(ellipse at 50% 25%, rgba(255, 200, 80, 0.7) 0%, rgba(255, 180, 60, 0.5) 55%, transparent 65%),
+    radial-gradient(ellipse at 50% 80%, rgba(255, 200, 80, 0.7) 0%, rgba(255, 180, 60, 0.5) 60%, transparent 70%);
+}
+
+/* =================================================================
+   CANVAS FIREFLIES — full-screen particle field (night only)
+   ================================================================= */
+.firefly-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 2.5s ease;
+}
+html[data-time="night"] .firefly-canvas { opacity: 1; }
+
+/* =================================================================
+   TENT-ZIP PAGE TRANSITION — two tent flaps close across the screen
+   ================================================================= */
+.tent-zip {
+  position: fixed;
+  inset: 0;
+  z-index: 9500;
+  pointer-events: none;
+  visibility: hidden;
+}
+.tent-zip.active { visibility: visible; }
+.tent-zip-left,
+.tent-zip-right {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 55%;
+  background: linear-gradient(135deg, #4A8A5F 0%, #2D5F3F 60%, #1F4429 100%);
+  border: 3px solid #1A2F1A;
+  transform: translateX(-110%);
+  transition: transform 0.5s cubic-bezier(0.7, 0, 0.3, 1);
+}
+.tent-zip-left  { left: 0;  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 50%); }
+.tent-zip-right { right: 0; clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 50%);
+  background: linear-gradient(225deg, #F5C56A 0%, #E8A530 60%, #C28518 100%);
+  transform: translateX(110%);
+  transform-origin: right center;
+}
+.tent-zip.active .tent-zip-left  { transform: translateX(0) skewX(-8deg); }
+.tent-zip.active .tent-zip-right { transform: translateX(0) skewX(8deg); }
+.tent-zip-line {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 4px;
+  height: 100%;
+  background: repeating-linear-gradient(180deg,
+    #1A2F1A 0 6px,
+    #E8A530 6px 12px);
+  transform: translateX(-50%) scaleY(0);
+  transform-origin: top;
+  transition: transform 0.4s ease-out;
+}
+.tent-zip.active .tent-zip-line { transform: translateX(-50%) scaleY(1); }
+
+/* =================================================================
+   3D MOUSE PARALLAX — mountains / sun / campfire shift with cursor
+   JS sets --mx and --my on body (range -1..1)
+   ================================================================= */
+body {
+  --mx: 0;
+  --my: 0;
+}
+.parallax-stage .mt-back,
+.parallax-stage .mt-mid,
+.parallax-stage .mt-front,
+.parallax-stage .mt-forest {
+  will-change: transform;
+}
+@media (hover: hover) and (pointer: fine) {
+  .parallax-stage {
+    --px: calc(var(--mx) * 18px);
+    --py: calc(var(--my) * 8px);
+  }
+  .global-sun,
+  .moon {
+    transition: left 2.5s ease, top 2.5s ease, opacity 2.5s ease, transform 0.25s ease-out;
+  }
+  .global-sun { will-change: transform; }
+}
+
+/* =================================================================
+   WEBGL FULLSCREEN LANDSCAPE — vanilla shader behind everything
+   Sits underneath the parallax mountains (which stay as a fallback
+   for browsers without WebGL support and for the night dimming)
+   ================================================================= */
+.webgl-landscape {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+.webgl-landscape.ready { opacity: 1; }
+/* The CSS parallax mountain layers compose ON TOP via mix-blend */
+.parallax-stage { mix-blend-mode: multiply; }
+html[data-time="night"] .parallax-stage { mix-blend-mode: screen; }
+
+/* =================================================================
+   DRONE FOLLOWER — flies above the traveler, sine-bobs, rotors blur
+   ================================================================= */
+.drone {
+  position: fixed;
+  bottom: 200px;
+  left: 0;
+  width: 64px;
+  height: 40px;
+  z-index: 81;
+  pointer-events: none;
+  filter: drop-shadow(0 6px 8px rgba(31, 44, 25, 0.4));
+  will-change: transform;
+}
+.drone .rotor {
+  transform-origin: center;
+  animation: rotor-spin 0.05s linear infinite;
+}
+@keyframes rotor-spin {
+  0%   { opacity: 0.6; transform: scaleX(1); }
+  50%  { opacity: 0.3; transform: scaleX(0.4); }
+  100% { opacity: 0.6; transform: scaleX(1); }
+}
+@media (max-width: 640px) { .drone { width: 48px; height: 30px; } }
+
+/* =================================================================
+   SPEECH BUBBLE — appears above the traveler with typewriter text
+   ================================================================= */
+.speech-bubble {
+  position: fixed;
+  bottom: 120px;
+  left: 0;
+  background: var(--white);
+  color: var(--green-dark);
+  padding: 0.6rem 0.9rem;
+  border-radius: 14px;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 700;
+  font-size: 0.78rem;
+  border: 2px solid var(--green-dark);
+  box-shadow: 0 8px 16px -4px rgba(31, 44, 25, 0.35);
+  max-width: 200px;
+  z-index: 82;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(8px) scale(0.85);
+  transition: opacity 0.3s, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+.speech-bubble.show { opacity: 1; transform: translateY(0) scale(1); }
+.speech-bubble .bubble-tail {
+  position: absolute;
+  bottom: -8px;
+  left: 18px;
+  width: 12px;
+  height: 12px;
+  background: var(--white);
+  border-right: 2px solid var(--green-dark);
+  border-bottom: 2px solid var(--green-dark);
+  transform: rotate(45deg);
+}
+html[data-time="night"] .speech-bubble {
+  background: #1F2D5A;
+  color: #FFE8B8;
+  border-color: #FFE8B8;
+}
+html[data-time="night"] .speech-bubble .bubble-tail {
+  background: #1F2D5A;
+  border-color: #FFE8B8;
+}
+
+/* =================================================================
+   SNAP-NAV DOTS — vertical section indicator on the right edge
+   ================================================================= */
+.snap-nav {
+  position: fixed;
+  right: 1.4rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 78;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  pointer-events: auto;
+}
+.snap-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(45, 95, 63, 0.35);
+  border: 2px solid var(--green);
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+}
+.snap-dot:hover { transform: scale(1.3); background: var(--gold); }
+.snap-dot.active {
+  background: var(--gold);
+  border-color: var(--gold-dark);
+  width: 14px;
+  height: 14px;
+  box-shadow: 0 0 12px rgba(232, 165, 48, 0.7);
+}
+.snap-dot::after {
+  content: attr(data-label);
+  position: absolute;
+  right: 22px;
+  top: 50%;
+  transform: translateY(-50%) translateX(8px);
+  background: var(--green-dark);
+  color: var(--cream);
+  padding: 0.25rem 0.6rem;
+  border-radius: 8px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s, transform 0.25s;
+}
+.snap-dot:hover::after { opacity: 1; transform: translateY(-50%) translateX(0); }
+@media (max-width: 880px) { .snap-nav { display: none; } }
+html[data-time="night"] .snap-dot { background: rgba(180, 200, 255, 0.3); border-color: #4A5A9A; }
+html[data-time="night"] .snap-dot.active { background: #FFE680; border-color: #FFE680; }
+
+/* =================================================================
+   CUSTOM SHADER CURSOR — canvas trail (desktop only)
+   ================================================================= */
+.shader-cursor {
+  position: fixed;
+  inset: 0;
+  z-index: 9100;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+@media (hover: none), (max-width: 768px) { .shader-cursor { display: none; } }
+
+/* =================================================================
+   LOTTIE-STYLE INLINE WIDGETS — placeholder marker class
+   ================================================================= */
+.lottie-mug {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  position: relative;
+  vertical-align: middle;
+}
+.lottie-mug::before {
+  content: '';
+  position: absolute;
+  inset: 22% 18% 12% 18%;
+  background: linear-gradient(180deg, #E8A530 0%, #C28518 100%);
+  border-radius: 4px 4px 8px 8px;
+  border: 2px solid #1A2F1A;
+}
+.lottie-mug::after {
+  content: '';
+  position: absolute;
+  right: 8%;
+  top: 38%;
+  width: 14px;
+  height: 18px;
+  border: 2px solid #1A2F1A;
+  border-left: none;
+  border-radius: 0 50% 50% 0;
+}
+.lottie-mug .mug-steam {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 6px;
+  height: 18px;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 50%;
+  filter: blur(2px);
+  transform: translateX(-50%);
+  animation: mug-steam-rise 2s ease-out infinite;
+}
+.lottie-mug .mug-steam:nth-child(2) { left: 38%; animation-delay: 0.6s; }
+.lottie-mug .mug-steam:nth-child(3) { left: 62%; animation-delay: 1.2s; }
+@keyframes mug-steam-rise {
+  0%   { opacity: 0; transform: translate(-50%, 0) scale(0.7); }
+  30%  { opacity: 0.85; }
+  100% { opacity: 0; transform: translate(-50%, -22px) scale(1.4); }
+}
+
+/* =================================================================
+   SCENE FOREGROUND — trees / river / wildlife / sky (fixed world)
+   ================================================================= */
+.scene-foreground {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* River — middle ground, flows with subtle stroke-dasharray animation */
+.scene-river {
+  position: absolute;
+  left: -5%;
+  right: -5%;
+  bottom: 24vh;
+  width: 110%;
+  height: 70px;
+  opacity: 0.82;
+  filter: drop-shadow(0 4px 8px rgba(60, 120, 200, 0.3));
+}
+.river-flow {
+  stroke-dasharray: 10 14;
+  animation: river-drift 12s linear infinite;
+}
+.river-flow.f2 { animation-duration: 16s; animation-delay: -4s; }
+.river-flow.f3 { animation-duration: 22s; animation-delay: -8s; }
+@keyframes river-drift {
+  to { stroke-dashoffset: -48; }
+}
+html[data-time="night"] .scene-river { opacity: 0.5; filter: hue-rotate(-20deg) brightness(0.55); }
+html[data-time="evening"] .scene-river { filter: hue-rotate(-10deg) brightness(0.8); }
+
+/* Forest — closest layer, taller trees, fastest parallax */
+.scene-forest {
+  position: absolute;
+  left: -4%;
+  right: -4%;
+  bottom: 0;
+  width: 108%;
+  height: 240px;
+  filter: drop-shadow(0 6px 10px rgba(10, 20, 10, 0.35));
+}
+html[data-time="night"] .scene-forest { filter: brightness(0.45) saturate(0.8); }
+html[data-time="evening"] .scene-forest { filter: brightness(0.8) hue-rotate(-10deg); }
+
+/* Deer idle bob */
+.scene-forest .deer {
+  transform-origin: center bottom;
+  animation: deer-graze 5s ease-in-out infinite;
+}
+.scene-forest .deer-b { animation-duration: 6s; animation-delay: -2s; }
+@keyframes deer-graze {
+  0%, 100% { transform: translate(var(--deer-x, 0), 0) rotate(0deg); }
+  25%      { transform: translate(var(--deer-x, 0), 0) rotate(6deg); }
+  50%      { transform: translate(var(--deer-x, 0), 0) rotate(4deg); }
+  75%      { transform: translate(var(--deer-x, 0), 0) rotate(-2deg); }
+}
+
+/* Bird flock — fly across the sky (day/morning only) */
+.scene-birds {
+  position: absolute;
+  top: 10vh;
+  left: 0;
+  right: 0;
+  height: 200px;
+  opacity: 0;
+  transition: opacity 2.5s ease;
+}
+html[data-time="day"] .scene-birds,
+html[data-time="morning"] .scene-birds { opacity: 0.85; }
+.bird-flock {
+  animation: bird-cross 35s linear infinite;
+}
+.bird-flock.bf2 { animation-duration: 45s; animation-delay: -12s; transform: translateY(35px); }
+.bird-flock.bf3 { animation-duration: 28s; animation-delay: -5s;  transform: translateY(70px); }
+.bird-mm {
+  animation: bird-flap 0.3s ease-in-out infinite alternate;
+  transform-origin: center;
+}
+@keyframes bird-flap {
+  from { transform: scaleY(0.6) translateY(-2px); }
+  to   { transform: scaleY(1.1)  translateY(0); }
+}
+@keyframes bird-cross {
+  from { transform: translateX(-80px); }
+  to   { transform: translateX(calc(100vw + 80px)); }
+}
+
+/* Butterflies (day / morning only) */
+.butterflies {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 2.5s ease;
+}
+html[data-time="day"] .butterflies,
+html[data-time="morning"] .butterflies { opacity: 1; }
+.butterfly {
+  position: absolute;
+  font-size: 1.4rem;
+  animation: butterfly-flit linear infinite;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2));
+}
+.butterfly.b1 { top: 60%; left: 10%; animation-duration: 16s; }
+.butterfly.b2 { top: 55%; left: 42%; animation-duration: 19s; animation-delay: -5s; }
+.butterfly.b3 { top: 65%; left: 72%; animation-duration: 22s; animation-delay: -10s; }
+@keyframes butterfly-flit {
+  0%   { transform: translate(0, 0) rotate(0); }
+  25%  { transform: translate(40px, -20px) rotate(10deg); }
+  50%  { transform: translate(80px, 10px) rotate(-8deg); }
+  75%  { transform: translate(40px, -15px) rotate(12deg); }
+  100% { transform: translate(0, 0) rotate(0); }
+}
+
+/* Owl (night only) */
+.scene-owl {
+  position: absolute;
+  top: 18vh;
+  right: 12%;
+  width: 54px;
+  height: 54px;
+  opacity: 0;
+  transition: opacity 2.5s ease;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+}
+html[data-time="night"] .scene-owl { opacity: 1; }
+.owl-pupil-l,
+.owl-pupil-r {
+  animation: owl-blink 6s steps(1) infinite;
+  transform-origin: center;
+}
+@keyframes owl-blink {
+  0%, 92% { transform: scaleY(1); }
+  93%, 95% { transform: scaleY(0.1); }
+  96%, 100% { transform: scaleY(1); }
+}
+
+/* Meteors (night only) */
+.meteors {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 2.5s ease;
+}
+html[data-time="night"] .meteors { opacity: 1; }
+.meteor {
+  position: absolute;
+  top: -20px;
+  width: 160px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.9) 100%);
+  filter: blur(0.5px);
+  transform-origin: right center;
+  transform: rotate(35deg);
+  opacity: 0;
+  animation: meteor-fall linear infinite;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+}
+.meteor.m1 { left: 18%; animation-duration: 9s;  animation-delay: 0s; }
+.meteor.m2 { left: 48%; animation-duration: 13s; animation-delay: 4s; }
+.meteor.m3 { left: 74%; animation-duration: 11s; animation-delay: 8s; }
+@keyframes meteor-fall {
+  0%, 85% { opacity: 0; transform: translate(-40px, -20px) rotate(35deg); }
+  90%     { opacity: 1; transform: translate(0, 0) rotate(35deg); }
+  95%     { opacity: 0.6; transform: translate(180px, 140px) rotate(35deg); }
+  100%    { opacity: 0; transform: translate(200px, 160px) rotate(35deg); }
+}
+
+/* =================================================================
+   FRIEND TRAVELER — smaller, follows the main traveler at a delay
+   ================================================================= */
+.traveler-friend {
+  position: fixed;
+  bottom: 6px;
+  left: -200px;
+  width: 60px;
+  height: 84px;
+  z-index: 79;
+  pointer-events: none;
+  filter: drop-shadow(0 3px 5px rgba(31, 44, 25, 0.3));
+  transform-origin: 50% 100%;
+}
+.tf-arm-l { transform-origin: 34px 26px; animation: arm-swing 0.95s ease-in-out infinite alternate; }
+.tf-arm-r { transform-origin: 34px 26px; animation: arm-swing 0.95s ease-in-out infinite alternate-reverse; }
+.tf-leg-l { transform-origin: 34px 52px; animation: leg-walk 0.95s ease-in-out infinite alternate; }
+.tf-leg-r { transform-origin: 34px 52px; animation: leg-walk 0.95s ease-in-out infinite alternate-reverse; }
+.tf-body  { animation: traveler-bob 0.48s ease-in-out infinite alternate; transform-origin: 34px 80px; }
+html[data-time="night"] .traveler-friend { filter: drop-shadow(0 3px 5px rgba(10, 20, 50, 0.6)) brightness(0.8); }
+
+@media (max-width: 640px) {
+  .traveler-friend { width: 48px; height: 66px; }
+}

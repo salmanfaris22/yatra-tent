@@ -1,4 +1,4 @@
-package api
+go package api
 
 import (
 	"encoding/json"
